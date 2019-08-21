@@ -6,7 +6,7 @@ height = gets.to_i
 
 ideal_weight = height - 110
 if ideal_weight < 0 
-	puts "Your weight is already optimal"
+  puts "Your weight is already optimal"
 else
-	puts "#{name}, your ideal weight is #{ideal_weight}"
+  puts "#{name}, your ideal weight is #{ideal_weight}"
 end
