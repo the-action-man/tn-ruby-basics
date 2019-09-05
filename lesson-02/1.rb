@@ -1,4 +1,4 @@
-h = {
+months = {
     january: 31,
     february: 28,
     march: 31,
@@ -13,4 +13,4 @@ h = {
     december: 31
 }
 
-h.each {|k,v| puts k if v == 30}
+months.each {|month, days| puts month if days == 30}

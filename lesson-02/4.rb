@@ -1,14 +1,11 @@
-h = Hash.new
-h["a"] = nil
-h["e"] = nil
-h["i"] = nil
-h["o"] = nil
-h["u"] = nil
+vowels = {}
+vowels['a'] = nil
+vowels['e'] = nil
+vowels['i'] = nil
+vowels['o'] = nil
+vowels['u'] = nil
 
-number = 1
-for i in "a".."z"
-  if h.key? i
-    h[i] = number
-  end
-  number += 1
+alphabet = 'a'..'z'
+alphabet.each.with_index(1) do |letter, position|
+  vowels[letter] = position if vowels.include? letter
 end

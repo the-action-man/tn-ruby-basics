@@ -1,4 +1,4 @@
-h = Hash.new
+products = {}
 loop do
   puts "Enter product name"
   name = gets.chomp
@@ -10,11 +10,11 @@ loop do
   puts "Enter quantity"
   quantity = gets.chomp.to_i
 
-  h[name] = {price: price, quantity: quantity}
+  products[name] = {price: price, quantity: quantity}
 end
 
 total_price = 0
-h.each do |name, info|
+products.each do |name, info|
   puts "   *** Product: #{name} ***"
   price = info[:price]
   quantity = info[:quantity]

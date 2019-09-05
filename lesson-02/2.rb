@@ -1,7 +1,7 @@
-a = []
+numbers = []
 i = 10
 
-while i < 101
-  a << i
+while i <= 100
+  numbers << i
   i += 5
 end

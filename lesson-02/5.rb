@@ -6,13 +6,7 @@ puts 'Enter date'
 date = gets.chomp.to_i
 
 is_leap_year = false
-if year % 4 == 0
-  is_leap_year = true
-  if year % 100 == 0
-    is_leap_year = false
-    is_leap_year = true if year % 400 == 0
-  end
-end
+is_leap_year = true if (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
 
 days_in_month = {
     1 => 31,
@@ -28,15 +22,10 @@ days_in_month = {
     11 => 30,
     12 => 31
 }
+days_in_month[2] = 29 if is_leap_year
 
-result = 0
-i = 1
-while i < month
-  result += days_in_month[i]
-  result += 1 if i == 2 && is_leap_year
-  i += 1
-end
-
+days_of_months_to_calc = days_in_month.values.take(month - 1)
+result = days_of_months_to_calc.sum
 result += date
 
 puts "Calculated result is #{result}"
