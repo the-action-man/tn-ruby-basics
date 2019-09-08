@@ -1,36 +1,34 @@
 class Train
-  attr_accessor :speed
-  attr_reader :wagons_quantity
-  attr_reader :type
+  attr_reader :speed, :wagons_quantity, :type
 
   def initialize(number, type, wagons_quantity)
     @number = number
     @type = type
     @wagons_quantity = wagons_quantity
-    self.speed = 0
+    @speed = 0
   end
 
   def start(speed)
-    self.speed = speed
+    @speed = speed
   end
 
   def stop
-    self.speed = 0
+    @speed = 0
   end
 
   def add_wagon
-    if self.speed == 0
+    if @speed == 0
       @wagons_quantity += 1
     else
-      puts "Wagon cannot be added because train is not stopped"
+      nil # Wagon cannot be added because train is not stopped
     end
   end
 
   def remove_wagon
-    if self.speed == 0
+    if @speed == 0
       @wagons_quantity -= 1
     else
-      puts "Wagon cannot be removed because train is not stopped"
+      nil # Wagon cannot be removed because train is not stopped
     end
   end
 
@@ -41,15 +39,21 @@ class Train
   end
 
   def go_ahead
-    @station.do_departure self
-    @station = get_next_station
-    @station.do_arrival self
+    next_station = get_next_station
+    unless next_station.nil?
+      @station.do_departure self
+      @station = next_station
+      @station.do_arrival self
+    end
   end
 
   def go_back
-    @station.do_departure self
-    @station = get_previous_station
-    @station.do_arrival self
+    previous_station = get_previous_station
+    unless previous_station.nil?
+      @station.do_departure self
+      @station = previous_station
+      @station.do_arrival self
+    end
   end
 
   def get_next_station
