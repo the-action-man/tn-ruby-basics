@@ -10,9 +10,7 @@ class Route
   end
 
   def remove_station(station)
-    if station != first_station && station != last_station # First and last station cannot be deleted
-      @stations.delete_if {|s| s == station}
-    end
+    @stations.delete_if {|s| s == station} if station != first_station && station != last_station
   end
 
   def first_station
