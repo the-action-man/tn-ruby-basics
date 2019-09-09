@@ -19,16 +19,12 @@ class Train
   def add_wagon
     if @speed == 0
       @wagons_quantity += 1
-    else
-      nil # Wagon cannot be added because train is not stopped
     end
   end
 
   def remove_wagon
     if @speed == 0
       @wagons_quantity -= 1
-    else
-      nil # Wagon cannot be removed because train is not stopped
     end
   end
 

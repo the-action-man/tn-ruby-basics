@@ -10,11 +10,7 @@ class Route
   end
 
   def remove_station(station)
-    if station == first_station
-      nil # First station cannot be deleted
-    elsif station == last_station
-      nil # Last station cannot be deleted
-    else
+    if station != first_station && station != last_station # First and last station cannot be deleted
       @stations.delete_if {|s| s == station}
     end
   end
@@ -28,18 +24,14 @@ class Route
   end
 
   def get_station_after(station)
-    if station == last_station
-      nil # The train is on the last station. The next station is absent.
-    else
+    if station != last_station # The next station is absent if the train is on the last station.
       index = @stations.index station
       @stations[index + 1]
     end
   end
 
   def get_station_before(station)
-    if station == first_station
-      nil # The train is on the first station. The previous station is absent.
-    else
+    if station != first_station # The previous station is absent if the train is on the first station.
       index = @stations.index station
       @stations[index - 1]
     end
