@@ -1,8 +1,9 @@
 class Train
-  attr_reader :number, :speed, :wagons, :route
+  attr_reader :number, :type, :speed, :wagons, :route
 
-  def initialize(number)
+  def initialize(number, type)
     @number = number
+    @type = type
     @speed = 0
     @wagons = []
   end
@@ -16,7 +17,7 @@ class Train
   end
 
   def add_wagon(wagon)
-    if @speed == 0
+    if @speed == 0 && wagon.type == self.type
       @wagons << wagon
     end
   end

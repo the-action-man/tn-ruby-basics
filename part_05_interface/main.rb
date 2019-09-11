@@ -9,7 +9,6 @@ require_relative 'wagon'
 require_relative 'rail_road'
 
 class UserInterface
-
   def show_menu
     puts 'Select number of menu item.'
     puts 'Number and appropriate data via spaces. Examples:'
