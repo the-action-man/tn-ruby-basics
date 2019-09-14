@@ -15,12 +15,12 @@ class RailRoad
     @routes[name] = Route.new name, @stations[first_station_name], @stations[last_station_name]
   end
 
-  def create_passenger_train(name)
-    @trains[name] = PassengerTrain.new name
+  def create_passenger_train(name, manufacturer)
+    @trains[name] = PassengerTrain.new name, manufacturer
   end
 
-  def create_cargo_train(name)
-    @trains[name] = CargoTrain.new name
+  def create_cargo_train(name, manufacturer)
+    @trains[name] = CargoTrain.new name, manufacturer
   end
 
   def add_station_to_route(route_name, station_name)
@@ -35,9 +35,9 @@ class RailRoad
     @trains[train_number].take_route @routes[route_name]
   end
 
-  def add_wagon_to_train(train_number)
-    wagon = CargoWagon.new if @trains[train_number].instance_of? CargoTrain
-    wagon = PassengerWagon.new if @trains[train_number].instance_of? PassengerTrain
+  def add_wagon_to_train(train_number, wagon_manufacturer)
+    wagon = CargoWagon.new wagon_manufacturer if @trains[train_number].instance_of? CargoTrain
+    wagon = PassengerWagon.new wagon_manufacturer if @trains[train_number].instance_of? PassengerTrain
     @trains[train_number].add_wagon wagon
   end
 
@@ -84,31 +84,31 @@ class RailRoad
         s101: (Station.new :s101),
         s102: (Station.new :s102),
         s103: (Station.new :s103),
-        s104: (Station.new :s104),
+        s104: (Station.new :s104)
     }
 
     @routes = {
         r1: (Route.new :r1, @stations[:s1], @stations[:s4]),
         r11: (Route.new :r11, @stations[:s11], @stations[:s14]),
-        r101: (Route.new :r101, @stations[:s101], @stations[:s104]),
+        r101: (Route.new :r101, @stations[:s101], @stations[:s104])
     }
 
     @trains = {
-        ct1: (CargoTrain.new :ct1),
-        ct2: (CargoTrain.new :ct2),
-        ct3: (CargoTrain.new :ct3),
-        pt1: (PassengerTrain.new :pt1),
-        pt2: (PassengerTrain.new :pt2),
-        pt3: (PassengerTrain.new :pt3),
+        ct1: (CargoTrain.new :ct1, :m1),
+        ct2: (CargoTrain.new :ct2, :m2),
+        ct3: (CargoTrain.new :ct3, :m3),
+        pt1: (PassengerTrain.new :pt1, :m1),
+        pt2: (PassengerTrain.new :pt2, :m2),
+        pt3: (PassengerTrain.new :pt3, :m3)
     }
 
     @wagons = {
-        cw1: (CargoWagon.new),
-        cw2: (CargoWagon.new),
-        cw3: (CargoWagon.new),
-        pw1: (PassengerWagon.new),
-        pw2: (PassengerWagon.new),
-        pw3: (PassengerWagon.new),
+        cw1: (CargoWagon.new :m1),
+        cw2: (CargoWagon.new :m2),
+        cw3: (CargoWagon.new :m3),
+        pw1: (PassengerWagon.new :m1),
+        pw2: (PassengerWagon.new :m2),
+        pw3: (PassengerWagon.new :m3)
     }
   end
 end

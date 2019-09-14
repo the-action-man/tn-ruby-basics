@@ -1,11 +1,26 @@
 class Train
+  include Manufacturer
+
+  @@instances = {}
   attr_reader :number, :type, :speed, :wagons, :route
 
-  def initialize(number, type)
+  class << self
+    def all
+      @@instances
+    end
+
+    def find(number)
+      @@instances[number]
+    end
+  end
+
+  def initialize(number, type, manufacturer)
     @number = number
     @type = type
     @speed = 0
     @wagons = []
+    self.manufacturer = manufacturer
+    @@instances[number] = self
   end
 
   def start(speed)
