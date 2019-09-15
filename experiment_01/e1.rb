@@ -1,7 +1,6 @@
 class E1
-  attr_accessor :a
-
-  def initialize (a)
-    @a = a
+  @@a = 0
+  def self.a
+    @@a
   end
 end
