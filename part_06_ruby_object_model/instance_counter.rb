@@ -5,12 +5,15 @@ module InstanceCounter
   end
 
   module ClassMethods
+    @@instances = {}
+
     def instances
-      @@instances
+      @@instances[self.name]
     end
 
-    def increment_instances
-      @@instances += 1
+    def increment_instances(obj)
+      @@instances[obj.class.name] = 0 if @@instances[obj.class.name].nil?
+      @@instances[obj.class.name] += 1
     end
   end
 
@@ -18,8 +21,8 @@ module InstanceCounter
 
     private
 
-    def register_instance
-      self.class.increment_instances
+    def register_instance(obj)
+      self.class.increment_instances obj
     end
   end
 end

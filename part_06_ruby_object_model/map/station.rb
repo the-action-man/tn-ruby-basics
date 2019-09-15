@@ -1,19 +1,18 @@
 class Station
   include InstanceCounter
-  @@instances = 0
 
-  # @@instances = []
+  @@instances = []
   attr_reader :trains, :name
 
-  # def self.all
-  #   @@instances
-  # end
+  def self.all
+    @@instances
+  end
 
   def initialize(name)
     @name = name
     @trains = []
-    # @@instances << self
-    register_instance
+    @@instances << self
+    register_instance self
   end
 
   def do_arrival(train)
