@@ -22,7 +22,7 @@ class Train
     @wagons = []
     self.manufacturer = manufacturer
     @@instances[number] = self
-    register_instance self
+    register_instance
   end
 
   def start(speed)

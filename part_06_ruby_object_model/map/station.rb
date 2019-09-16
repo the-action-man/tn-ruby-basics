@@ -12,7 +12,7 @@ class Station
     @name = name
     @trains = []
     @@instances << self
-    register_instance self
+    register_instance
   end
 
   def do_arrival(train)
