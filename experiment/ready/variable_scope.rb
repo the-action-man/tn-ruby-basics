@@ -4,12 +4,12 @@
 # CONCLUSION:
 # @i_v in class and in initialize are different variables:
 # --- 1 ---
-# VarExp.my_class_method => @i_v = 10
+# VariableScope.my_class_method => @i_v = 10
 # --- 2 ---
-# e = varExp.new
+# e = VariableScope.new
 # e.my_instance_method => @i_v = 20
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-class VarExp
+class VariableScope
   MY_CONSTANT = -1  # constant
   l_v = 0           # local variable
   @i_v = 10         # instance variable
