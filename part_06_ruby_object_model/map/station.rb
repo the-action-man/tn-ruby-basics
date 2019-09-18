@@ -9,10 +9,18 @@ class Station
   end
 
   def initialize(name)
+    validate! name
     @name = name
     @trains = []
     @@instances << self
     register_instance
+  end
+
+  def valid?(name)
+    validate!  name
+    true
+  rescue
+    false
   end
 
   def do_arrival(train)
@@ -30,5 +38,11 @@ class Station
       trains_by_type[train.type] << train
     end
     trains_by_type
+  end
+
+  private
+
+  def validate!(name)
+    raise 'name is blank' if name.nil?
   end
 end

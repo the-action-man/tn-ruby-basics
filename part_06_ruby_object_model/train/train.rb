@@ -16,6 +16,7 @@ class Train
   end
 
   def initialize(number, type, manufacturer)
+    validate! number, type, manufacturer
     @number = number
     @type = type
     @speed = 0
@@ -23,6 +24,13 @@ class Train
     self.manufacturer = manufacturer
     @@instances[number] = self
     register_instance
+  end
+
+  def valid?(number, type, manufacturer)
+    validate! number, type, manufacturer
+    true
+  rescue
+    false
   end
 
   def start(speed)
@@ -83,5 +91,21 @@ class Train
 
   def get_previous_station
     @route.get_station_before @station
+  end
+
+  private
+
+  def validate!(number, type, manufacturer)
+    raise 'number is blank' if number.nil?
+    allowed_number_size = 6
+    raise "number is too long. No more #{allowed_number_size} symbols are allowed" if number.size > allowed_number_size
+    raise 'Incorrect number format. Correct examples: 1b3-1b or a2c-d5 or 12345' if number !~ /^(\d|[a-z]){3}(-|)(\d|[a-z]){2}$/
+
+    raise 'type is blank' if type.nil?
+    raise "Incorrect type format. Correct value example: 'cargo', 'passenger'." if type !~ /^(cargo|passenger)$/
+
+    raise 'manufacturer is blank' if manufacturer.nil?
+    allowed_manufacturer_size = 15
+    raise "manufacturer is too long. No more #{allowed_manufacturer_size} symbols are allowed" if number.size > allowed_manufacturer_size
   end
 end

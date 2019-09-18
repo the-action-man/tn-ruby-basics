@@ -15,12 +15,28 @@ class RailRoad
     @routes[name] = Route.new name, @stations[first_station_name], @stations[last_station_name]
   end
 
-  def create_passenger_train(name, manufacturer)
-    @trains[name] = PassengerTrain.new name, manufacturer
+  def create_passenger_train
+    puts 'enter number'
+    number = gets.chomp.to_s
+    puts 'enter manufacturer'
+    manufacturer = gets.chomp.to_s
+    @trains[number] = PassengerTrain.new number, manufacturer
+  rescue Exception => e
+    puts e.message
+  else
+    puts "Passenger train with number '#{number}' is created."
   end
 
-  def create_cargo_train(name, manufacturer)
-    @trains[name] = CargoTrain.new name, manufacturer
+  def create_cargo_train
+    puts 'enter name'
+    number = gets.chomp.to_s
+    puts 'enter manufacturer'
+    manufacturer = gets.chomp.to_s
+    @trains[number] = CargoTrain.new number, manufacturer
+  rescue Exception => e
+    puts e.message
+  else
+    puts "Cargo train with number '#{number}' is created."
   end
 
   def add_station_to_route(route_name, station_name)

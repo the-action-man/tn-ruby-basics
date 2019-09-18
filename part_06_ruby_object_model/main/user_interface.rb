@@ -1,15 +1,18 @@
 class UserInterface
   def show_menu
+    puts ''
     puts 'Select number of menu item.'
     puts 'Number and appropriate data via spaces. Examples:'
     puts '    1 cargo_train_1'
     puts '    2 route_1 station_1 station_3'
+    puts 'Or enter just number if you see ... in the end part of menu item'
+    puts ''
     puts 'Menu items:'
     puts '    0- EXIT'
     puts '    1- create_station(name)'
     puts '    2- create_route(name, first_station_name, last_station_name)'
-    puts '    3- create_passenger_train(name)'
-    puts '    4- create_cargo_train(name)'
+    puts '    3- create_passenger_train...'
+    puts '    4- create_cargo_train...'
     puts '    5- add_station_to_route(route_name, station_name)'
     puts '    6- remove_station_from_route(route_name, station_name)'
     puts '    7- take_route_for_train(train_number, route_name)'
@@ -39,9 +42,9 @@ class UserInterface
       when 2
         rr.create_route data[1], data[2], data[3]
       when 3
-        rr.create_passenger_train data[1], data[2]
+        rr.create_passenger_train
       when 4
-        rr.create_cargo_train data[1], data[2]
+        rr.create_cargo_train
       when 5
         rr.add_station_to_route data[1], data[2]
       when 6

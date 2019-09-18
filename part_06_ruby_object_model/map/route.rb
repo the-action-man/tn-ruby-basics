@@ -3,10 +3,18 @@ class Route
 
   attr_reader :name, :stations
 
-  def initialize(name, start_station, finish_station)
+  def initialize(name, start_station_name, finish_station_name)
+    validate! name, start_station_name, finish_station_name
     @name = name
-    @stations = [start_station, finish_station]
+    @stations = [start_station_name, finish_station_name]
     register_instance
+  end
+
+  def valid?(name, start_station_name, finish_station_name)
+    validate! name, start_station_name, finish_station_name
+    true
+  rescue
+    false
   end
 
   def add_station(station, order_number = -2)
@@ -37,5 +45,13 @@ class Route
       index = @stations.index station
       @stations[index - 1]
     end
+  end
+
+  private
+
+  def validate!(name, start_station_name, finish_station_name)
+    raise 'name is blank' if name.nil?
+    raise 'start_station_name is blank' if start_station_name.nil?
+    raise 'finish_station_name is blank' if finish_station_name.nil?
   end
 end
