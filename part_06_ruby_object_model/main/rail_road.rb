@@ -8,7 +8,7 @@ class RailRoad
   end
 
   def create_station(name)
-    @stations[name] = Station.new name
+    @stations[name] = Station.new(name)
   end
 
   def create_route(name, first_station_name, last_station_name)
@@ -20,7 +20,7 @@ class RailRoad
     number = gets.chomp.to_s
     puts 'enter manufacturer'
     manufacturer = gets.chomp.to_s
-    @trains[number] = PassengerTrain.new number, manufacturer
+    @trains[number] = PassengerTrain.new(number, manufacturer)
   rescue Exception => e
     puts e.message
   else
@@ -32,7 +32,7 @@ class RailRoad
     number = gets.chomp.to_s
     puts 'enter manufacturer'
     manufacturer = gets.chomp.to_s
-    @trains[number] = CargoTrain.new number, manufacturer
+    @trains[number] = CargoTrain.new(number, manufacturer)
   rescue Exception => e
     puts e.message
   else

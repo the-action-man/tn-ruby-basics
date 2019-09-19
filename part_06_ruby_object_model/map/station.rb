@@ -1,23 +1,27 @@
 class Station
   include InstanceCounter
 
-  @@instances = []
+  @@instances = {}
   attr_reader :trains, :name
 
   def self.all
     @@instances
   end
 
+  def self.find(name)
+    @@instances[name]
+  end
+
   def initialize(name)
-    validate! name
     @name = name
     @trains = []
-    @@instances << self
+    validate!
+    @@instances[name] = self
     register_instance
   end
 
-  def valid?(name)
-    validate!  name
+  def valid?
+    validate!
     true
   rescue
     false
@@ -42,7 +46,11 @@ class Station
 
   private
 
-  def validate!(name)
-    raise 'name is blank' if name.nil?
+  ERR_BLANK_NAME = 'name is blank'
+  ERR_ALREADY_EXISTS = "#{name} station already exists"
+
+  def validate!
+    raise ERR_BLANK_NAME if @name.nil?
+    raise ERR_ALREADY_EXISTS unless Station.find(@name).nil?
   end
 end

@@ -16,18 +16,18 @@ class Train
   end
 
   def initialize(number, type, manufacturer)
-    validate! number, type, manufacturer
     @number = number
     @type = type
     @speed = 0
     @wagons = []
-    self.manufacturer = manufacturer
+    @manufacturer = manufacturer
+    validate!
     @@instances[number] = self
     register_instance
   end
 
-  def valid?(number, type, manufacturer)
-    validate! number, type, manufacturer
+  def valid?
+    validate!
     true
   rescue
     false
@@ -95,17 +95,30 @@ class Train
 
   private
 
-  def validate!(number, type, manufacturer)
-    raise 'number is blank' if number.nil?
-    allowed_number_size = 6
-    raise "number is too long. No more #{allowed_number_size} symbols are allowed" if number.size > allowed_number_size
-    raise 'Incorrect number format. Correct examples: 1b3-1b or a2c-d5 or 12345' if number !~ /^(\d|[a-z]){3}(-|)(\d|[a-z]){2}$/
+  ALLOWED_NUMBER_SIZE = 6
+  ALLOWED_NUMBER_FORMAT = /^(\d|[a-z]){3}(-|)(\d|[a-z]){2}$/
+  ERR_MSG_BLANK_NUMBER = 'number is blank'
+  ERR_MSG_TOO_LONG_NUMBER = "number is too long. No more #{ALLOWED_NUMBER_SIZE} symbols are allowed"
+  ERR_MSG_WRONG_NUMBER_FORMAT = 'Incorrect number format. Correct examples: 1b3-1b or a2c-d5 or 12345'
 
-    raise 'type is blank' if type.nil?
-    raise "Incorrect type format. Correct value example: 'cargo', 'passenger'." if type !~ /^(cargo|passenger)$/
+  ALLOWED_TYPE_FORMAT = /^(cargo|passenger)$/
+  ERR_MSG_BLANK_TYPE = 'type is blank'
+  ERR_MSG_WRONG_TYPE_FORMAT = "Incorrect type format. Correct value example: 'cargo', 'passenger'."
 
-    raise 'manufacturer is blank' if manufacturer.nil?
-    allowed_manufacturer_size = 15
-    raise "manufacturer is too long. No more #{allowed_manufacturer_size} symbols are allowed" if number.size > allowed_manufacturer_size
+  ALLOWED_MANUFACTURER_SIZE = 15
+  ERR_MSG_BLANK_MANUFACTURER = 'manufacturer is blank'
+  ERR_MSG_TOO_LONG_MANUFACTURER = "manufacturer is too long. No more #{ALLOWED_MANUFACTURER_SIZE} symbols are allowed"
+
+
+  def validate!
+    raise ERR_MSG_BLANK_NUMBER if @number.nil?
+    raise ERR_MSG_TOO_LONG_NUMBER if @number.size > ALLOWED_NUMBER_SIZE
+    raise ERR_MSG_WRONG_NUMBER_FORMAT if @number !~ ALLOWED_NUMBER_FORMAT
+
+    raise ERR_MSG_BLANK_TYPE if @type.nil?
+    raise ERR_MSG_WRONG_TYPE_FORMAT if @type !~ ALLOWED_TYPE_FORMAT
+
+    raise ERR_MSG_BLANK_MANUFACTURER if @manufacturer.nil?
+    raise ERR_MSG_TOO_LONG_MANUFACTURER if @manufacturer.size > ALLOWED_MANUFACTURER_SIZE
   end
 end
