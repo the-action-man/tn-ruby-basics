@@ -2,6 +2,20 @@ class Train
   include Manufacturer
   include InstanceCounter
 
+  ALLOWED_NUMBER_SIZE = 6
+  ALLOWED_NUMBER_FORMAT = /^[a-z\d]{3}-?[a-z\d]{2}$/
+  ERR_MSG_BLANK_NUMBER = 'number is blank'
+  ERR_MSG_TOO_LONG_NUMBER = "number is too long. No more #{ALLOWED_NUMBER_SIZE} symbols are allowed"
+  ERR_MSG_WRONG_NUMBER_FORMAT = 'Incorrect number format. Correct examples: 1b3-1b or a2c-d5 or 12345'
+
+  ALLOWED_TYPE_FORMAT = /^(cargo|passenger)$/
+  ERR_MSG_BLANK_TYPE = 'type is blank'
+  ERR_MSG_WRONG_TYPE_FORMAT = "Incorrect type format. Correct value example: 'cargo', 'passenger'."
+
+  ALLOWED_MANUFACTURER_SIZE = 15
+  ERR_MSG_BLANK_MANUFACTURER = 'manufacturer is blank'
+  ERR_MSG_TOO_LONG_MANUFACTURER = "manufacturer is too long. No more #{ALLOWED_MANUFACTURER_SIZE} symbols are allowed"
+
   @@instances = {}
   attr_reader :number, :type, :speed, :wagons, :route
 
@@ -94,21 +108,6 @@ class Train
   end
 
   private
-
-  ALLOWED_NUMBER_SIZE = 6
-  ALLOWED_NUMBER_FORMAT = /^(\d|[a-z]){3}(-|)(\d|[a-z]){2}$/
-  ERR_MSG_BLANK_NUMBER = 'number is blank'
-  ERR_MSG_TOO_LONG_NUMBER = "number is too long. No more #{ALLOWED_NUMBER_SIZE} symbols are allowed"
-  ERR_MSG_WRONG_NUMBER_FORMAT = 'Incorrect number format. Correct examples: 1b3-1b or a2c-d5 or 12345'
-
-  ALLOWED_TYPE_FORMAT = /^(cargo|passenger)$/
-  ERR_MSG_BLANK_TYPE = 'type is blank'
-  ERR_MSG_WRONG_TYPE_FORMAT = "Incorrect type format. Correct value example: 'cargo', 'passenger'."
-
-  ALLOWED_MANUFACTURER_SIZE = 15
-  ERR_MSG_BLANK_MANUFACTURER = 'manufacturer is blank'
-  ERR_MSG_TOO_LONG_MANUFACTURER = "manufacturer is too long. No more #{ALLOWED_MANUFACTURER_SIZE} symbols are allowed"
-
 
   def validate!
     raise ERR_MSG_BLANK_NUMBER if @number.nil?

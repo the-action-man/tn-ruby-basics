@@ -1,6 +1,14 @@
 class Route
   include InstanceCounter
 
+  ERR_BLANK_NAME = 'name is blank'
+  ERR_ALREADY_EXISTS = "route already exists"
+  ERR_NIL_START_STATION = 'start_station is nil'
+  ERR_START_STATION_NOT_OBJECT = 'start_station is not Station object'
+  ERR_NIL_FINISH_STATION = 'finish_station is nil'
+  ERR_FINISH_STATION_NOT_OBJECT = 'start_station is not Station object'
+  ERR_SAME_START_FINISH = 'start_station and finish_station are the same'
+
   @@instances = {}
   attr_reader :name, :stations
 
@@ -59,17 +67,9 @@ class Route
 
   private
 
-  ERR_BLANK_NAME = 'name is blank'
-  ERR_ALREADY_EXISTS = "#{@name} route already exists"
-  ERR_NIL_START_STATION = 'start_station is nil'
-  ERR_START_STATION_NOT_OBJECT = 'start_station is not Station object'
-  ERR_NIL_FINISH_STATION = 'finish_station is nil'
-  ERR_FINISH_STATION_NOT_OBJECT = 'start_station is not Station object'
-  ERR_SAME_START_FINISH = 'start_station and finish_station are the same'
-
   def validate!
     raise ERR_BLANK_NAME if @name.nil?
-    raise ERR_ALREADY_EXISTS unless Route.find(@name).nil?
+    raise "#{@name} #{ERR_ALREADY_EXISTS}" unless Route.find(@name).nil?
     raise ERR_NIL_START_STATION if first_station.nil?
     raise ERR_START_STATION_NOT_OBJECT unless first_station.is_a?(Station)
     raise ERR_NIL_FINISH_STATION if last_station.nil?
