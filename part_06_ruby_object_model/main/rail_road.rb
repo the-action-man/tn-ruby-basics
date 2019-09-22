@@ -51,9 +51,9 @@ class RailRoad
     @trains[train_number].take_route @routes[route_name]
   end
 
-  def add_wagon_to_train(train_number, wagon_manufacturer)
-    wagon = CargoWagon.new wagon_manufacturer if @trains[train_number].instance_of? CargoTrain
-    wagon = PassengerWagon.new wagon_manufacturer if @trains[train_number].instance_of? PassengerTrain
+  def add_wagon_to_train(train_number, wagon_number, wagon_manufacturer, volume_or_seats)
+    wagon = CargoWagon.new wagon_number, wagon_manufacturer, volume_or_seats if @trains[train_number].instance_of? CargoTrain
+    wagon = PassengerWagon.new wagon_number, wagon_manufacturer, volume_or_seats if @trains[train_number].instance_of? PassengerTrain
     @trains[train_number].add_wagon wagon
   end
 
@@ -69,13 +69,48 @@ class RailRoad
     @trains[train_number].go_back
   end
 
-  def get_list_of_stations_and_trains
+  def show_stations_with_trains
     data = {}
     @stations.each do |station_name, station|
-      data[station_name] = [] unless data.key? station_name
-      station.trains.each { |train| data[station.name] << train.number }
+      puts "'#{station_name}' station:"
+      station.enumerate_trains do |train|
+        puts "  '#{train.number}' train (type: #{train.type}, wagons quantity: #{train.wagons.size}):"
+        wagon_order = 1
+        train.enumerate_wagons do |wagon|
+          puts "    #{wagon_order}: '#{wagon.number}' wagon - type: #{wagon.type})"
+          if wagon.type == :cargo
+            puts "      available volume: #{wagon.available_volume}"
+            puts "      taken volume: #{wagon.taken_volume}"
+          end
+          if wagon.type == :passenger
+            puts "      available seats: #{wagon.available_seats_quantity}"
+            puts "      taken seats: #{wagon.taken_seats_quantity}"
+          end
+          wagon_order += 1
+        end
+      end
     end
     data
+  end
+
+  def take_wagon_seat(wagon_number)
+    wagon = Wagon.find(wagon_number)
+    wagon.take_seat if !wagon.nil? && wagon.type == :passenger
+  end
+
+  def take_wagon_volume(wagon_number, volume)
+    wagon = Wagon.find(wagon_number)
+    wagon.take_volume(volume.to_i) if !wagon.nil? && wagon.type == :cargo
+  end
+
+  def show_train(train_number)
+    train = Train.find(train_number)
+    unless train.nil?
+      puts "Train with number #{train.number} has wagons with numbers:"
+      train.enumerate_wagons do |wagon|
+        puts "    #{wagon.number}"
+      end
+    end
   end
 
   def seed
@@ -84,47 +119,61 @@ class RailRoad
   end
 
   def create_relations
-    @trains[:ct1].take_route @routes[:r1]
+    @trains['ct100'].take_route @routes['r1']
+    @trains['ct200'].take_route @routes['r1']
+    @trains['ct300'].take_route @routes['r1']
+
+    @trains['ct100'].add_wagon @wagons['cw1']
+    @trains['ct100'].add_wagon @wagons['cw2']
+    @trains['ct100'].add_wagon @wagons['cw3']
+
+    @trains['pt100'].take_route @routes['r11']
+    @trains['pt200'].take_route @routes['r11']
+    @trains['pt300'].take_route @routes['r11']
+
+    @trains['pt100'].add_wagon @wagons['pw1']
+    @trains['pt100'].add_wagon @wagons['pw2']
+    @trains['pt100'].add_wagon @wagons['pw3']
   end
 
   def create_data
     @stations = {
-        s1: (Station.new :s1),
-        s2: (Station.new :s2),
-        s3: (Station.new :s3),
-        s4: (Station.new :s4),
-        s11: (Station.new :s11),
-        s12: (Station.new :s12),
-        s13: (Station.new :s13),
-        s14: (Station.new :s14),
-        s101: (Station.new :s101),
-        s102: (Station.new :s102),
-        s103: (Station.new :s103),
-        s104: (Station.new :s104)
+        's1' => (Station.new 's1'),
+        's2' => (Station.new 's2'),
+        's3' => (Station.new 's3'),
+        's4' => (Station.new 's4'),
+        's11' => (Station.new 's11'),
+        's12' => (Station.new 's12'),
+        's13' => (Station.new 's13'),
+        's14' => (Station.new 's14'),
+        's101' => (Station.new 's101'),
+        's102' => (Station.new 's102'),
+        's103' => (Station.new 's103'),
+        's104' => (Station.new 's104')
     }
 
     @routes = {
-        r1: (Route.new :r1, @stations[:s1], @stations[:s4]),
-        r11: (Route.new :r11, @stations[:s11], @stations[:s14]),
-        r101: (Route.new :r101, @stations[:s101], @stations[:s104])
+        'r1' => (Route.new 'r1', @stations['s1'], @stations['s4']),
+        'r11' => (Route.new 'r11', @stations['s11'], @stations['s14']),
+        'r101' => (Route.new 'r101', @stations['s101'], @stations['s104'])
     }
 
     @trains = {
-        ct1: (CargoTrain.new :ct1, :m1),
-        ct2: (CargoTrain.new :ct2, :m2),
-        ct3: (CargoTrain.new :ct3, :m3),
-        pt1: (PassengerTrain.new :pt1, :m1),
-        pt2: (PassengerTrain.new :pt2, :m2),
-        pt3: (PassengerTrain.new :pt3, :m3)
+        'ct100' => (CargoTrain.new 'ct100', 'm1'),
+        'ct200' => (CargoTrain.new 'ct200', 'm2'),
+        'ct300' => (CargoTrain.new 'ct300', 'm3'),
+        'pt100' => (PassengerTrain.new 'pt100', 'm1'),
+        'pt200' => (PassengerTrain.new 'pt200', 'm2'),
+        'pt300' => (PassengerTrain.new 'pt300', 'm3')
     }
 
     @wagons = {
-        cw1: (CargoWagon.new :m1),
-        cw2: (CargoWagon.new :m2),
-        cw3: (CargoWagon.new :m3),
-        pw1: (PassengerWagon.new :m1),
-        pw2: (PassengerWagon.new :m2),
-        pw3: (PassengerWagon.new :m3)
+        'cw1' => (CargoWagon.new 'cw1', 'm1', 100),
+        'cw2' => (CargoWagon.new 'cw2','m2', 200),
+        'cw3' => (CargoWagon.new 'cw3','m3', 300),
+        'pw1' => (PassengerWagon.new 'pw1', 'm1', 100),
+        'pw2' => (PassengerWagon.new 'pw2', 'm2', 200),
+        'pw3' => (PassengerWagon.new 'pw3','m3', 300)
     }
   end
 end

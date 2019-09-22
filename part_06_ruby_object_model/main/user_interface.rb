@@ -16,20 +16,25 @@ class UserInterface
     puts '    5- add_station_to_route(route_name, station_name)'
     puts '    6- remove_station_from_route(route_name, station_name)'
     puts '    7- take_route_for_train(train_number, route_name)'
-    puts '    8- add_wagon_to_train(train_number)'
+    puts '    8- add_wagon_to_train(train_number, wagon_number, wagon_manufacturer, volume_or_seats)'
     puts '    9- remove_wagon_from_train(train_number)'
     puts '    10- go_ahead_train(train_number)'
     puts '    11- go_back_train(train_number)'
-    puts '    12- get_list_of_stations_and_trains'
-    puts 'Enter menu item number and data:'
+    puts '    12- show_stations_with_trains'
+    puts '    13- take_wagon_seat(wagon_number)'
+    puts '    14- take_wagon_volume(wagon_number, volume)'
+    puts '    15- show_train(train_number)'
+    puts '    100- seed'
+    puts '    101- show menu'
   end
 
   def start
     puts 'Hi! It is RailRoad application!'
+    show_menu
     rr = RailRoad.new
 
     loop do
-      show_menu
+      puts 'Enter menu item number and data:'
       input = gets.chomp.to_s
       data = input.split(' ')
 
@@ -52,7 +57,7 @@ class UserInterface
       when 7
         rr.take_route_for_train data[1], data[2]
       when 8
-        rr.add_wagon_to_train data[1], data[2]
+        rr.add_wagon_to_train data[1], data[2], data[3], data[4]
       when 9
         rr.remove_wagon_from_train data[1]
       when 10
@@ -60,7 +65,17 @@ class UserInterface
       when 11
         rr.go_back_train data[1]
       when 12
-        puts rr.get_list_of_stations_and_trains
+        puts rr.show_stations_with_trains
+      when 13
+        puts rr.take_wagon_seat data[1]
+      when 14
+        puts rr.take_wagon_volume data[1], data[2]
+      when 15
+        puts rr.show_train data[1]
+      when 100
+        puts rr.seed
+      when 101
+        puts show_menu
       else
         puts 'Incorrect selection'
       end

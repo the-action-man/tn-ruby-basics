@@ -1,10 +1,23 @@
 class Wagon
   include Manufacturer
 
-  attr_reader :type
+  @@instances = {}
+  attr_reader :number, :type
 
-  def initialize(type, manufacturer)
+  class << self
+    def all
+      @@instances
+    end
+
+    def find(number)
+      @@instances[number]
+    end
+  end
+
+  def initialize(number, type, manufacturer)
+    @number = number
     @type = type
+    @@instances[number] = self
     self.manufacturer = manufacturer
   end
 end

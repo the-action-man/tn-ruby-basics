@@ -107,6 +107,10 @@ class Train
     @route.get_station_before @station
   end
 
+  def enumerate_wagons
+    @wagons.each {|wagon| yield wagon }
+  end
+
   private
 
   def validate!
