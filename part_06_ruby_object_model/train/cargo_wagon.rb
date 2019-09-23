@@ -1,21 +1,23 @@
 require_relative 'wagon'
 
 class CargoWagon < Wagon
-  attr_reader :volume, :taken_volume
-
   def initialize(number, manufacturer, volume)
-    super number,:cargo, manufacturer
-    @volume = volume
-    @taken_volume = 0
+    super number,:cargo, manufacturer, volume
   end
 
   def take_volume(volume_to_take)
-    if volume_to_take + @taken_volume <= @volume
-      @taken_volume += volume_to_take
-    end
+    take_space volume_to_take
   end
 
   def available_volume
-    @volume - @taken_volume
+    available_space
+  end
+
+  def taken_volume
+    taken_space
+  end
+
+  def volume
+    space_value
   end
 end

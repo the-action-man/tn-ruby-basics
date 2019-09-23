@@ -52,9 +52,9 @@ class RailRoad
   end
 
   def add_wagon_to_train(train_number, wagon_number, wagon_manufacturer, volume_or_seats)
-    wagon = CargoWagon.new wagon_number, wagon_manufacturer, volume_or_seats if @trains[train_number].instance_of? CargoTrain
-    wagon = PassengerWagon.new wagon_number, wagon_manufacturer, volume_or_seats if @trains[train_number].instance_of? PassengerTrain
-    @trains[train_number].add_wagon wagon
+    wagon = CargoWagon.new(wagon_number, wagon_manufacturer, volume_or_seats) if @trains[train_number].instance_of? CargoTrain
+    wagon = PassengerWagon.new(wagon_number, wagon_manufacturer, volume_or_seats) if @trains[train_number].instance_of? PassengerTrain
+    @trains[train_number].add_wagon(wagon)
   end
 
   def remove_wagon_from_train(train_number)
@@ -70,27 +70,13 @@ class RailRoad
   end
 
   def show_stations_with_trains
-    data = {}
     @stations.each do |station_name, station|
       puts "'#{station_name}' station:"
-      station.enumerate_trains do |train|
+      station.each_train do |train|
         puts "  '#{train.number}' train (type: #{train.type}, wagons quantity: #{train.wagons.size}):"
-        wagon_order = 1
-        train.enumerate_wagons do |wagon|
-          puts "    #{wagon_order}: '#{wagon.number}' wagon - type: #{wagon.type})"
-          if wagon.type == :cargo
-            puts "      available volume: #{wagon.available_volume}"
-            puts "      taken volume: #{wagon.taken_volume}"
-          end
-          if wagon.type == :passenger
-            puts "      available seats: #{wagon.available_seats_quantity}"
-            puts "      taken seats: #{wagon.taken_seats_quantity}"
-          end
-          wagon_order += 1
-        end
+        train.show_wagons
       end
     end
-    data
   end
 
   def take_wagon_seat(wagon_number)
@@ -107,7 +93,7 @@ class RailRoad
     train = Train.find(train_number)
     unless train.nil?
       puts "Train with number #{train.number} has wagons with numbers:"
-      train.enumerate_wagons do |wagon|
+      train.each_wagon do |wagon|
         puts "    #{wagon.number}"
       end
     end

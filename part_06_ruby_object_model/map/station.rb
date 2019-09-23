@@ -47,8 +47,8 @@ class Station
     trains_by_type
   end
 
-  def enumerate_trains
-    @trains.each {|tran| yield tran }
+  def each_train
+    @trains.each { |tran| yield tran }
   end
 
   private

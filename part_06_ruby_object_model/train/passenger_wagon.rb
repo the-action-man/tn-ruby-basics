@@ -1,21 +1,23 @@
 require_relative 'wagon'
 
 class PassengerWagon < Wagon
-  attr_reader :seats_quantity, :taken_seats_quantity
-
   def initialize(number, manufacturer, seats_quantity)
-    super number,:passenger, manufacturer
-    @seats_quantity = seats_quantity
-    @taken_seats_quantity = 0
+    super number,:passenger, manufacturer, seats_quantity
   end
 
   def take_seat
-    if @taken_seats_quantity != @seats_quantity
-      @taken_seats_quantity += 1
-    end
+    take_space 1
   end
 
   def available_seats_quantity
-    @seats_quantity - @taken_seats_quantity
+    available_space
+  end
+
+  def seats_quantity
+    space_value
+  end
+
+  def taken_seats_quantity
+    taken_space
   end
 end

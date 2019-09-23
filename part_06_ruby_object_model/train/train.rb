@@ -107,8 +107,26 @@ class Train
     @route.get_station_before @station
   end
 
-  def enumerate_wagons
-    @wagons.each {|wagon| yield wagon }
+  def each_wagon
+    @wagons.each { |wagon| yield wagon }
+  end
+
+  def show_wagons
+    wagon_order = 1
+    each_wagon do |wagon|
+      puts "    #{wagon_order}: '#{wagon.number}' wagon - type: #{wagon.type})"
+      case wagon.type
+      when :cargo
+        puts "      available volume: #{wagon.available_volume}"
+        puts "      taken volume: #{wagon.taken_volume}"
+      when :passenger
+        puts "      available seats: #{wagon.available_seats_quantity}"
+        puts "      taken seats: #{wagon.taken_seats_quantity}"
+      else
+        raise Exception "Unknown wagon type: #{wagon.type}"
+      end
+      wagon_order += 1
+    end
   end
 
   private
