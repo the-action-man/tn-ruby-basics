@@ -2,7 +2,7 @@ class Wagon
   include Manufacturer
 
   @@instances = {}
-  attr_reader :number, :type
+  attr_reader :number, :type, :space_value, :taken_space
 
   class << self
     def all
@@ -22,10 +22,6 @@ class Wagon
     @space_value = space_value
     @taken_space = 0
   end
-
-  protected
-
-  attr_reader :space_value, :taken_space
 
   def take_space(space_to_take)
     if space_to_take + @taken_space <= @space_value
