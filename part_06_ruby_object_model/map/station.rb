@@ -1,8 +1,8 @@
 class Station
   include InstanceCounter
 
-  ERR_BLANK_NAME = 'name is blank'
-  ERR_ALREADY_EXISTS = "station already exists"
+  ERR_BLANK_NAME = 'name is blank'.freeze
+  ERR_ALREADY_EXISTS = 'station already exists'.freeze
 
   @@instances = {}
   attr_reader :trains, :name
@@ -26,7 +26,7 @@ class Station
   def valid?
     validate!
     true
-  rescue
+  rescue RailRoadError
     false
   end
 
@@ -54,7 +54,8 @@ class Station
   private
 
   def validate!
-    raise ERR_BLANK_NAME if @name.nil?
-    raise "#{@name} #{ERR_ALREADY_EXISTS}" unless Station.find(@name).nil?
+    raise RailRoadError, ERR_BLANK_NAME if @name.nil?
+    raise RailRoadError, "#{@name} #{ERR_ALREADY_EXISTS}" \
+                                                unless Station.find(@name).nil?
   end
 end

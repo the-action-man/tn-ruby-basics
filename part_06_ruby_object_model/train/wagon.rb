@@ -24,9 +24,8 @@ class Wagon
   end
 
   def take_space(space_to_take)
-    if space_to_take + @taken_space <= @space_value
-      @taken_space += space_to_take
-    end
+    @taken_space += space_to_take \
+                            unless space_to_take + @taken_space <= @space_value
   end
 
   def available_space

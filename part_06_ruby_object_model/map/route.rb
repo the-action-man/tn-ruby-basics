@@ -1,13 +1,13 @@
 class Route
   include InstanceCounter
 
-  ERR_BLANK_NAME = 'name is blank'
-  ERR_ALREADY_EXISTS = "route already exists"
-  ERR_NIL_START_STATION = 'start_station is nil'
-  ERR_START_STATION_NOT_OBJECT = 'start_station is not Station object'
-  ERR_NIL_FINISH_STATION = 'finish_station is nil'
-  ERR_FINISH_STATION_NOT_OBJECT = 'start_station is not Station object'
-  ERR_SAME_START_FINISH = 'start_station and finish_station are the same'
+  ERR_BLANK_NAME = 'name is blank'.freeze
+  ERR_ALREADY_EXISTS = 'route already exists'.freeze
+  ERR_NIL_START_STATION = 'start_station is nil'.freeze
+  ERR_START_STATION_NOT_OBJECT = 'start_station is not Station object'.freeze
+  ERR_NIL_FINISH_STATION = 'finish_station is nil'.freeze
+  ERR_FINISH_STATION_NOT_OBJECT = 'start_station is not Station object'.freeze
+  ERR_SAME_START_FINISH = 'start_station and finish_station are the same'.freeze
 
   @@instances = {}
   attr_reader :name, :stations
@@ -31,7 +31,7 @@ class Route
   def valid?
     validate!
     true
-  rescue
+  rescue RailRoadError
     false
   end
 
@@ -40,7 +40,9 @@ class Route
   end
 
   def remove_station(station)
-    @stations.delete_if {|s| s == station} if station != first_station && station != last_station
+    return if station == first_station || station == last_station
+
+    @stations.delete_if { |s| s == station }
   end
 
   def first_station
@@ -52,28 +54,31 @@ class Route
   end
 
   def get_station_after(station)
-    if station != last_station # The next station is absent if the train is on the last station.
-      index = @stations.index station
-      @stations[index + 1]
-    end
+    return if station == last_station
+
+    index = @stations.index station
+    @stations[index + 1]
   end
 
   def get_station_before(station)
-    if station != first_station # The previous station is absent if the train is on the first station.
-      index = @stations.index station
-      @stations[index - 1]
-    end
+    return if station == first_station
+
+    index = @stations.index station
+    @stations[index - 1]
   end
 
   private
 
   def validate!
-    raise ERR_BLANK_NAME if @name.nil?
-    raise "#{@name} #{ERR_ALREADY_EXISTS}" unless Route.find(@name).nil?
-    raise ERR_NIL_START_STATION if first_station.nil?
-    raise ERR_START_STATION_NOT_OBJECT unless first_station.is_a?(Station)
-    raise ERR_NIL_FINISH_STATION if last_station.nil?
-    raise ERR_FINISH_STATION_NOT_OBJECT unless last_station.is_a?(Station)
-    raise ERR_SAME_START_FINISH if first_station == last_station
+    raise RailRoadError, ERR_BLANK_NAME if @name.nil?
+    raise RailRoadError, "#{@name} #{ERR_ALREADY_EXISTS}" \
+                                            unless Route.find(@name).nil?
+    raise RailRoadError, ERR_NIL_START_STATION if first_station.nil?
+    raise RailRoadError, ERR_START_STATION_NOT_OBJECT \
+                                            unless first_station.is_a?(Station)
+    raise RailRoadError, ERR_NIL_FINISH_STATION if last_station.nil?
+    raise RailRoadError, ERR_FINISH_STATION_NOT_OBJECT \
+                                            unless last_station.is_a?(Station)
+    raise RailRoadError, ERR_SAME_START_FINISH if first_station == last_station
   end
 end

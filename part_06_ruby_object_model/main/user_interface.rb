@@ -16,7 +16,8 @@ class UserInterface
     puts '    5- add_station_to_route(route_name, station_name)'
     puts '    6- remove_station_from_route(route_name, station_name)'
     puts '    7- take_route_for_train(train_number, route_name)'
-    puts '    8- add_wagon_to_train(train_number, wagon_number, wagon_manufacturer, volume_or_seats)'
+    puts '    8- add_wagon_to_train(train_number, wagon_number, ' \
+                                          'wagon_manufacturer, volume_or_seats)'
     puts '    9- remove_wagon_from_train(train_number)'
     puts '    10- go_ahead_train(train_number)'
     puts '    11- go_back_train(train_number)'
