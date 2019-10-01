@@ -131,7 +131,7 @@ class Train
 
   private
 
-  def validate!
+  def validate! #TODO delete
     raise RailRoadError, ERR_MSG_BLANK_NUMBER if @number.nil?
     raise RailRoadError, ERR_MSG_TOO_LONG_NUMBER \
                                         if @number.size > ALLOWED_NUMBER_SIZE
