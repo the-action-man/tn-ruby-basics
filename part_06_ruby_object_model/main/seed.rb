@@ -40,12 +40,12 @@ module Seed
     }
 
     @trains = {
-      'ct100' => CargoTrain.new('ct100', 'm1'),
-      'ct200' => CargoTrain.new('ct200', 'm2'),
-      'ct300' => CargoTrain.new('ct300', 'm3'),
-      'pt100' => PassengerTrain.new('pt100', 'm1'),
-      'pt200' => PassengerTrain.new('pt200', 'm2'),
-      'pt300' => PassengerTrain.new('pt300', 'm3')
+      'ct100' => Train.new('ct100', :cargo, 'm1'),
+      'ct200' => Train.new('ct200', :cargo, 'm2'),
+      'ct300' => Train.new('ct300', :cargo, 'm3'),
+      'pt100' => Train.new('pt100', :passenger, 'm1'),
+      'pt200' => Train.new('pt200', :passenger, 'm2'),
+      'pt300' => Train.new('pt300', :passenger, 'm3')
     }
 
     @wagons = {

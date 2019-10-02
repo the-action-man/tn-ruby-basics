@@ -5,13 +5,10 @@ module Validation
   end
 
   module ClassMethods
-    @variables_to_validate = []
-
     def validate(*args)
+      @variables_to_validate ||= []
       @variables_to_validate << args
     end
-
-    #TODO try to set here private
 
     def variables_to_validate
       @variables_to_validate
@@ -19,6 +16,13 @@ module Validation
   end
 
   module InstanceMethods
+    def valid?
+      validate!
+      true
+    rescue RailRoadError
+      false
+    end
+
     private
 
     def validate!
@@ -43,13 +47,13 @@ module Validation
         validate_type(variable_name, value, validation_arg)
       else
         raise RailRoadError, "'#{:type}' is unknown validation type" \
-                                 "(second argument) for variable #{variable_name}"
+                             "(second argument) for variable #{variable_name}"
       end
     end
 
     def validate_presence(variable_name, value)
-      raise RailRoadError, "#{variable_name} value is not present" \
-                                                              if value.present?
+      raise RailRoadError, "#{variable_name} value is nil" if value.nil?
+      raise RailRoadError, "#{variable_name} value is empty" if value.empty?
     end
 
     def validate_format(variable_name, value, format)
@@ -63,5 +67,4 @@ module Validation
                            unless value.instance_of? expected_class
     end
   end
-
 end

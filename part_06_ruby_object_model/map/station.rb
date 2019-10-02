@@ -1,8 +1,9 @@
 class Station
   include InstanceCounter
+  include Validation
 
-  ERR_BLANK_NAME = 'name is blank'.freeze
-  ERR_ALREADY_EXISTS = 'station already exists'.freeze
+  validate :name, :presence
+  validate :name, :type, String
 
   @@instances = {}
   attr_reader :trains, :name
@@ -21,13 +22,6 @@ class Station
     validate!
     @@instances[name] = self
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RailRoadError
-    false
   end
 
   def do_arrival(train)
@@ -49,13 +43,5 @@ class Station
 
   def each_train
     @trains.each { |tran| yield tran }
-  end
-
-  private
-
-  def validate!
-    raise RailRoadError, ERR_BLANK_NAME if @name.nil?
-    raise RailRoadError, "#{@name} #{ERR_ALREADY_EXISTS}" \
-                                                unless Station.find(@name).nil?
   end
 end
